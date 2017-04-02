@@ -1,0 +1,131 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{pdfpages}
+\usepackage{amssymb}
+%\usepackage[backend=bibtex,style=verbose-trad2]{biblatex}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+%\bibliography{file}
+\title{MULTIPLICATION TRICKS}
+\author{$by$ PRITHVIRAJ CHAVAN}
+\date{$6^{th}$ March $2017$}
+\begin{document}
+	\begin{titlepage}
+		\maketitle
+		\vfill
+		\begin{center}
+			Course: CS251(Computing Laboratory)
+		\end{center}
+	\end{titlepage}
+	\tableofcontents
+	\newpage
+	\section{INTRODUCTION}
+	In this article you shall learn some multiplication tricks to make calculations easier and quicker (although you have calculators for that :p). This article covers some special cases of multiplication of two digit numbers and how the analogy can be extended to 3 digit numbers.
+	\section{The Trick}
+	\subsection{Case 1}
+	\label{1}
+	Suppose you have to multiply two 2-digit numbers, where the $1^{st}$ digits of the two 2-digit numbers are the same and the sum of the $2^{nd}$ digits of the 2-digit numbers add up to 10, 
+	following examples shall illustrate the case and the trick we are using.
+	\includepdf{pic1.pdf}
+	\begin{flushleft}
+		\begin{tabular}{ |m{2.5cm}|m{2.5cm}|m{2.5cm}|m{2.5cm}| }
+			\hline
+			Numbers & $d_4d_3$ & $d_2d_1$ & Product\\ \hline
+			34*36 & 3*4 = 12 & 4*6=24 & 1224\\ \hline
+			75*75 & 7*8 = 56 & 5*5=25 & 5625\\ \hline
+			82*88 & 8*9 = 72 & 8*2=16 & 7216\\
+			\hline  	
+		\end{tabular}
+	\end{flushleft}
+	\subsubsection{Method to find the product}
+	\textbf{Step 1:} Multiply $digit_1$ with $digit_1+1$. The product obtained will be the first two digits of your number(if the product is a single digit then the product obtained is the first digit)\\\\
+	\textbf{Step 2:} Multiply $digit_2$ of each number with each other. The product obtained will be the last two digits of your number(if the product obtained is single digit then you have to append a zero before the digit to make it a two digit number)
+	\subsubsection{Algorithm}
+	\begin{algorithm}[H]
+		input $n_1, n_2$ 
+		\begin{algorithmic}[1]
+			\If {$(n_1<0)$ or $(n_1>100)$ or $(n_2<0)$ or $(n_2>100)$}
+			\State Exit
+			\EndIf
+			\If {($n_1/10$ != $n_2/10$) or (($n_1$ mod 10) + ($n_2$ mod 10) != 10)}
+			\State Exit
+			\EndIf
+			\\
+			$d_1$ $\gets$ $n_1/10$ \\ 
+			$d_2$ $\gets$ $n_1$ mod 10 \\
+			prod $\gets$ $(100*d_1*(d_1+1)) + (d_2 * (10 - d_2))$ 
+		\end{algorithmic}
+	\end{algorithm}
+	\subsubsection{The Algebra involved in this method}
+	Let the two numbers be $10d_1+d_2$ and $10d_1'+d_2'$ where $d_1$ and $d_2$ correspond to the first two digits of $number_1$($N_1$), whereas $d_2'$ is the $2^{nd}$ digit of $number_2$($N_2$)[This is the general form of case 1(\ref{1})] such that,
+	\begin{align*}
+	d_2'&=(10-d_2) & d_1'=d_1
+	\end{align*}
+	Now the product of these two numbers is $p=(N_1)*(N_2)$,
+	\begin{align*}
+	p&=(10d_1+d_2)(10d_1'+d_2')\\
+	&=(10d_1+d_2)(10d_1+(10-d_2))\\
+	&=100d_1^2+100d_1+d_2(10-d_2)\\
+	&=100(d_1(d_1+1))+d_2d_2'
+	\end{align*}\footnote{Convince yourself that this implies our formula is correct, otherwise refer \url{http://www.vedamu.org}}\\
+	\newpage
+	\subsection{Case 2}
+	\label{2}
+	Suppose you have to multiply two 2-digit numbers, where the $2^{nd}$ digits of the two 2-digit numbers are the same and the sum of the $1^{st}$ digits of the 2-digit numbers add up to 10, i.e. %image source add examples
+	\begin{flushleft}
+		\begin{tabular}{ |m{2.5cm}|m{2.5cm}|m{2.5cm}|m{2.5cm}| }
+			\hline
+			Numbers & $d_4d_3$ & $d_2d_1$ & Product\\ \hline
+			43*63 & 4*6 + 3 = 27 & 3*3=09 & 2709\\ \hline
+			57*57 & 5*5 + 7 = 32 & 7*7=49 & 3249\\ \hline
+			28*68 & 2*6 + 8 = 20 & 8*8=64 & 2064\\
+			\hline  	
+		\end{tabular}
+	\end{flushleft}
+	\subsection{Method to find the product}
+	\textbf{Step 1:} Multiply $digit_1$ of each number with each other and add the $digit_2$
+	to this product. The number obtained will be the $1^{st}$ two digits of the final product.
+	\\
+	\textbf{Step 2:} Multiply the $digit_2$ of each number, the product obtained will be the last two digits of the required product(if the product is single digit, we have to append a zero before the number to get a two digit number).
+	\subsubsection{Algorithm}
+	\begin{algorithm}[H]
+		input $n_1, n_2$ 
+		\begin{algorithmic}[1]
+			\If {$(n_1<0)$ or $(n_1>100)$ or $(n_2<0)$ or $(n_2>100)$}
+			\State Exit
+			\EndIf
+			\If {($n_1/10$ + $n_2/10$ != 10) or (($n_1$ mod 10) != ($n_2$ mod 10))}
+			\State Exit
+			\EndIf
+			\\
+			$d_1$ $\gets$ $n_1/10$ \\ 
+			$d_2$ $\gets$ $n_1$ mod 10 \\
+			prod $\gets$ $(100*(d_1*(10-d_1)+d_2)) + (d_2*d_2))$ 
+		\end{algorithmic}
+	\end{algorithm}
+	\subsubsection{The Algebra involved in this method}
+	Let the two numbers be $10d_1+d_2$ and $10d_1'+d_2'$ where $d_1$ and $d_2$ correspond to the first two digits of $number_1$($N_1$), whereas $d_2'$ is the $2^{nd}$ digit of $number_2$($N_2$)[This is the general form of case2(\ref{2})] such that,
+	\begin{align*}
+	d_1'&=(10-d_1) & d_2'=d_2
+	\end{align*}
+	Now the product of these two numbers is $p=(N_1)*(N_2)$,
+	\begin{align*}
+	p&=(10d_1+d_2)(10d_1'+d_2')\\
+	&=(10d_1+d_2)(10(10-d_1)+d_2))\\
+	&=1000d_1-100d_1^2+100d_2+d_2^2\\
+	&=100[(d_1)(10-d_1)+d_2]+d_2d_2'\\
+	&=100(d_1d_1'+d_2)+d_2^2
+	\end{align*}
+	\section{Can this be extended to 3-digit numbers}
+	The multiplication of n-digit numbers can be done using vedic mathematics easily, but devising a similar method as used in 2-digit case for some specil cases is not as easy as it seems for 3-digit numbers. For other vedic math tricks please feel free to visit \url{http://www.vedamu.org}.You can also go through this book \cite{Vedicmaths} if you really want to get fascinated by vedic maths. For more information about sutras and vedas please refer to \cite{Atharvaveda}
+	
+	\section{Bibliography}
+	\bibliographystyle{unsrt}
+	\bibliography{file}
+\end{document}
